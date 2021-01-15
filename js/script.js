@@ -120,7 +120,6 @@ function post(city) {
     resetValues();
     weather = fetchData('95fe07de55e269e37fd5d76b7d2f231e', city)
     .then(weather => {
-        console.log(weather);
         for (let i = 0; i < weather.list.length; i++) {
             cardWrapper.innerHTML += createCard(weather.list[i].weather[0].icon, weather.list[i].weather["0"].description, weather.list[i].dt_txt, weather.list[i].main.temp, weather.list[i].main.humidity, weather.list[i].wind.speed); 
             highestTemp(weather.list[i].main.temp_max, weather.list[i].dt_txt);
