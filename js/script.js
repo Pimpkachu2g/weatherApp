@@ -4,6 +4,7 @@ let btn = document.getElementsByClassName('btn');
 let text = document.getElementsByClassName('form-control');
 let cardWrapper = document.getElementsByClassName('cards-wrapper')[0];
 let statistics = document.getElementsByClassName('w-statistics')[0];
+let load = document.getElementsByClassName('welcome')[0];
 let weather;
 let highest = -Infinity;
 let lowest = Infinity;
@@ -13,37 +14,39 @@ let lMoist = Infinity;
 let aMoist = 0;
 let warmestDay;
 let coldestDay;
-pages[0].style.display = 'block';
 
-function selected(item, item2) {
+function enable(element, Pagei) {
+    element.classList.add('active');
+    pages[Pagei].classList.add('show');
+    console.log(pages[Pagei])
+}
+
+function disable() {
     for (let i = 0; i < navbar.length; i++) {
         navbar[i].classList.remove('active');
-        pages[i].style.display = "none";
-        
+        pages[i].classList.remove('show');
     }
-    item.classList.add('active');
-    pages[item2].style.display = "block";
 }
 
 for (let i = 0; i < navbar.length; i++) {
     navbar[i].addEventListener('click', function() {
-        selected(this, i);
-    
+        disable();
+        enable(this, i);
     })
-    
 }
 
 function resetValues () {
     statistics.innerHTML = ''; //reset statistics HTML
     cardWrapper.innerHTML = ''; //reset hourly HTML
+    load.innerHTML = '';
     highest = -Infinity;
     lowest = Infinity;
     avrg = 0;
     hMoist = -Infinity;
     lMoist = Infinity;
     aMoist = 0;
-    warmestDay;
-    coldestDay;
+    warmestDay = null;
+    coldestDay = null;
 }
 
 async function fetchData(apiKey, city) {
@@ -99,20 +102,21 @@ function createCard (icon, description, date, temp, humidity, windSpeed) {
 function generateStats (highestTemp, highestHumidity, lowestTemp, lowestHumidity, average, averageMoist, warmestDay, coldestDay) {
     let stats = `
     <div class="low">
-        <div><img src="./style/images/thermometer.svg"><span class="${pickColor(lowestTemp)}">Lowest Temperature: <br> ${lowestTemp}</span></div>
+        <div><img src="./style/images/thermometer.svg"><span>Lowest Temperature: </span> <br> <span class="${pickColor(lowestTemp)}">${lowestTemp}  °C</span></div>
         <div><img src="./style/images/humidity.svg"><span>Lowest Humidity: <br> ${lowestHumidity}%</span></div>
         <div><img src="./style/images/cold.svg"><span>Coldest day of the <br> following period is on: ${coldestDay}</span></div>
     </div>
     <div class="avg">
-        <div><img src="./style/images/thermometer.svg"><span class="${pickColor(average)}">Average Temperature: <br> ${Math.floor(average)}</span></div>
+        <div><img src="./style/images/thermometer.svg"><span>Average Temperature: </span> <br> <span class="${pickColor(average)}">${Math.floor(average)} °C</span></div>
         <div><img src="./style/images/humidity.svg"><span>Average Humidity: <br> ${Math.floor(averageMoist)}%</span></div>
     </div>
     <div class="high">
-        <div><img src="./style/images/thermometer.svg"><span class="${pickColor(highestTemp)}">Highest Temperature: <br> ${highestTemp}</span></div>
+        <div><img src="./style/images/thermometer.svg"><span>Highest Temperature: </span> <br> <span class="${pickColor(highestTemp)}">${highestTemp} °C</span></div>
         <div><img src="./style/images/humidity.svg"><span>Highest Humidity: <br> ${highestHumidity}</span></div>
         <div><img src="./style/images/hot-thermometer.svg"><span>Warmest day of the <br> following period is on: ${warmestDay}</span></div>
     </div>
     `;
+    console.log('activated')
     return stats;
 }
 
@@ -131,7 +135,9 @@ function post(city) {
             }
             statistics.innerHTML += generateStats (highest, hMoist, lowest, lMoist, avrg / weather.list.length, aMoist / weather.list.length, warmestDay, coldestDay);
         }
-)}
+)
+resetValues ()
+}
 
 function highestTemp(num,day) {
     if(highest < num){
