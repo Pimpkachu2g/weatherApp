@@ -192,8 +192,7 @@ hr {
     text-shadow: 0 0 10px  #f07924,
     0 0 40px  red,
     0 0 80px  #f07924,
-    0 0 160px  red,
-    0 0 240px  red;
+    0 0 160px  red;
 }
 
 
@@ -202,8 +201,7 @@ hr {
     text-shadow: 0 0 10px  #84dbce,
     0 0 40px  #84dbce,
     0 0 80px  #84dbce,
-    0 0 160px  #84dbce,
-    0 0 240px  #84dbce;
+    0 0 160px  #84dbce;
 }
 
 /* Statistics */
