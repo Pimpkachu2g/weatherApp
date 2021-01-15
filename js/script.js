@@ -18,7 +18,6 @@ let coldestDay;
 function enable(element, Pagei) {
     element.classList.add('active');
     pages[Pagei].classList.add('show');
-    console.log(pages[Pagei])
 }
 
 function disable() {
@@ -52,6 +51,7 @@ function resetValues () {
 async function fetchData(apiKey, city) {
     let call = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&APPID=${apiKey}`);
     let data = await call.json();
+    console.log(data)
     return data;
 }
 
@@ -116,7 +116,6 @@ function generateStats (highestTemp, highestHumidity, lowestTemp, lowestHumidity
         <div><img src="./style/images/hot-thermometer.svg"><span>Warmest day of the <br> following period is on: ${warmestDay}</span></div>
     </div>
     `;
-    console.log('activated')
     return stats;
 }
 
@@ -124,7 +123,7 @@ function post(city) {
     resetValues();
     weather = fetchData('95fe07de55e269e37fd5d76b7d2f231e', city)
     .then(weather => {
-        for (let i = 0; i < weather.list.length; i++) {
+        for (let i = 0; i < weather.list.length / 2; i++) { // remove / 2 for more info
             cardWrapper.innerHTML += createCard(weather.list[i].weather[0].icon, weather.list[i].weather["0"].description, weather.list[i].dt_txt, weather.list[i].main.temp, weather.list[i].main.humidity, weather.list[i].wind.speed); 
             highestTemp(weather.list[i].main.temp_max, weather.list[i].dt_txt);
             lowestTemp(weather.list[i].main.temp_min,  weather.list[i].dt_txt);
